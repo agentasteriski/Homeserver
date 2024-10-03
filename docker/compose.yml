@@ -187,23 +187,23 @@ services:
       plugsy.category: Network
 ##
 ##____________________ Unifi controller [NETWORKING/Unifi-controller]
-  unifi-wifi:
-    image: lscr.io/linuxserver/unifi-controller
-    container_name: net-unifi-wifi
-    restart: "no"
-    network_mode: host
-    volumes:
-      - $DOCKERDIR/networking/unifi-wifi:/unifi
-    environment:
-      TZ: $TZ
-      PUID: 1000
-      PGID: 1000
-      MEM_LIMIT: 1024
-      MEM_STARTUP: 256
-    labels:
-      plugsy.name: WiFi AP [UniFi]
-      plugsy.category: Network
-      plugsy.link: http://unifi.o/
+  #unifi-wifi:
+    #image: lscr.io/linuxserver/unifi-controller
+    #container_name: net-unifi-wifi
+    #restart: "no"
+    #network_mode: host
+    #volumes:
+      #- $DOCKERDIR/networking/unifi-wifi:/unifi
+    #environment:
+      #TZ: $TZ
+      #PUID: 1000
+      #PGID: 1000
+      #MEM_LIMIT: 1024
+      #MEM_STARTUP: 256
+    #labels:
+      #plugsy.name: WiFi AP [UniFi]
+      #plugsy.category: Network
+      #plugsy.link: http://unifi.o/
 ##
 ##________________________ VPN-portal [NETWORKING/vpn]
   VPN-portal:
@@ -249,193 +249,193 @@ services:
 ##________CLOUD SERVICES______
 ##
 ##_____________________ Firefox Sync [CLOUD/Browser] 
-  firefox-sync:
-    container_name: cloud-firefox-sync
-    image: crazymax/firefox-syncserver:latest
-    restart: always
-    networks: 
-      - net-caddy-proxy
-    environment: 
-      FF_SYNCSERVER_PUBLIC_URL: https://firefox.$DOMAIN
-      FF_SYNCSERVER_SECRET: $FFSYNCSECRET                # generate secret.txt first see docker-config.sh
-      FF_SYNCSERVER_FORWARDED_ALLOW_IPS: '*'
-      FF_SYNCSERVER_FORCE_WSGI_ENVIRON: true
-      FF_SYNCSERVER_ALLOW_NEW_USERS: false
-      FF_SYNCSERVER_LOGLEVEL: debug
-      FF_SYNCSERVER_ACCESSLOG: true
-    volumes:
-      - $DOCKERDIR/cloud/firefox-sync:/data
-    labels:
-      caddy: firefox.$DOMAIN
-      caddy.reverse_proxy: "{{upstreams 5000}}"
-      plugsy.name: Browser [Firefox Sync]
-      plugsy.category: Cloud
+  #firefox-sync:
+    #container_name: cloud-firefox-sync
+    #image: crazymax/firefox-syncserver:latest
+    #restart: always
+    #networks: 
+      #- net-caddy-proxy
+    #environment: 
+      #FF_SYNCSERVER_PUBLIC_URL: https://firefox.$DOMAIN
+      #FF_SYNCSERVER_SECRET: $FFSYNCSECRET                # generate secret.txt first see docker-config.sh
+      #FF_SYNCSERVER_FORWARDED_ALLOW_IPS: '*'
+      #FF_SYNCSERVER_FORCE_WSGI_ENVIRON: true
+      #FF_SYNCSERVER_ALLOW_NEW_USERS: false
+      #FF_SYNCSERVER_LOGLEVEL: debug
+      #FF_SYNCSERVER_ACCESSLOG: true
+    #volumes:
+      #- $DOCKERDIR/cloud/firefox-sync:/data
+    #labels:
+      #caddy: firefox.$DOMAIN
+      #caddy.reverse_proxy: "{{upstreams 5000}}"
+      #plugsy.name: Browser [Firefox Sync]
+      #plugsy.category: Cloud
 ##
 ##_____________________ Bitwarden [CLOUD/Password-manager] 
-  vaultwarden:
-    container_name: cloud-vaultwarden
-    image: vaultwarden/server
-    restart: always
-    healthcheck:
-      interval: 5m # to test the container, change to 10s. To prevent constant logfile activity, change to a few minutes
-    networks: 
-      - net-caddy-proxy
-    environment:
-      TZ: $TZ
-      WEBSOCKET_ENABLED: true
-      DOMAIN: vault.$DOMAIN
-      SIGNUPS_ALLOWED: false
-      ADMIN_TOKEN: $VAULTWARDENTOKEN
-    volumes:
-      - $DOCKERDIR/cloud/vaultwarden:/data
-    labels:
-      caddy: vault.$DOMAIN
-      caddy.reverse_proxy_0: "{{upstreams 80}}"
+  #vaultwarden:
+    #container_name: cloud-vaultwarden
+    #image: vaultwarden/server
+    #restart: always
+    #healthcheck:
+      #interval: 5m # to test the container, change to 10s. To prevent constant logfile activity, change to a few minutes
+    #networks: 
+      #- net-caddy-proxy
+    #environment:
+      #TZ: $TZ
+      #WEBSOCKET_ENABLED: true
+      #DOMAIN: vault.$DOMAIN
+      #SIGNUPS_ALLOWED: false
+      #ADMIN_TOKEN: $VAULTWARDENTOKEN
+    #volumes:
+      #- $DOCKERDIR/cloud/vaultwarden:/data
+    #labels:
+      #caddy: vault.$DOMAIN
+      #caddy.reverse_proxy_0: "{{upstreams 80}}"
       # Required extra headers
-      caddy.encode: gzip
-      caddy.header.X-XSS-Protection: '"1; mode=block;"'
-      caddy.header.X-Frame-Options: "DENY"
-      caddy.header.X-Content-Type-Options: "none"
-      caddy.reverse_proxy_1: "/notifications/hub/negotiate {{upstreams 80}}"
-      caddy.reverse_proxy_2: "/notifications/hub {{upstreams 3012}}"
-      plugsy.name: Password Manager [Vaultwarden]
-      plugsy.link: https://vault.$DOMAIN
-      plugsy.category: Cloud
+      #caddy.encode: gzip
+      #caddy.header.X-XSS-Protection: '"1; mode=block;"'
+      #caddy.header.X-Frame-Options: "DENY"
+      #caddy.header.X-Content-Type-Options: "none"
+      #caddy.reverse_proxy_1: "/notifications/hub/negotiate {{upstreams 80}}"
+      #caddy.reverse_proxy_2: "/notifications/hub {{upstreams 3012}}"
+      #plugsy.name: Password Manager [Vaultwarden]
+      #plugsy.link: https://vault.$DOMAIN
+      #plugsy.category: Cloud
 ##
 ##____________________ FileRun [CLOUD/FileRun]
-  filerun:
-    container_name: cloud-filerun
-    image: filerun/filerun:8.1
-    restart: always
-    networks: 
-      - net-caddy-proxy
-      - net-filerun
-    environment:
-      TZ: $TZ
-      FR_DB_HOST: filerun-db
-      FR_DB_PORT: 3306
-      FR_DB_NAME: filerun-db
-      FR_DB_USER: $USER
-      FR_DB_PASS: $PW_DB
-      APACHE_RUN_USER: $USER
-      APACHE_RUN_USER_ID: $PUID
-      APACHE_RUN_GROUP: $USER
-      APACHE_RUN_GROUP_ID: $PGID
-    depends_on:
-      - filerun-db
-    volumes:
-      - $DOCKERDIR/cloud/filerun/html:/var/www/html
-      - $DATAPOOL/users:/user-files
-      - /user-files/snapshots/ # This excludes the $DATAPOOL/users/snapshots folder on your host. Otherwise Filerun will index all those snapshots.
-    labels:
-      caddy: drive.$DOMAIN
-      caddy.reverse_proxy: "{{upstreams 80}}"
-      caddy.reverse_proxy.header_up: "Host drive.$DOMAIN"
+  #filerun:
+    #container_name: cloud-filerun
+    #image: filerun/filerun:8.1
+    #restart: always
+   # networks: 
+      #- net-caddy-proxy
+      #- net-filerun
+    #environment:
+      #TZ: $TZ
+      #FR_DB_HOST: filerun-db
+      #FR_DB_PORT: 3306
+      #FR_DB_NAME: filerun-db
+      #FR_DB_USER: $USER
+      #FR_DB_PASS: $PW_DB
+      #APACHE_RUN_USER: $USER
+      #APACHE_RUN_USER_ID: $PUID
+      #APACHE_RUN_GROUP: $USER
+      #APACHE_RUN_GROUP_ID: $PGID
+    #depends_on:
+      #- filerun-db
+    #volumes:
+      #- $DOCKERDIR/cloud/filerun/html:/var/www/html
+      #- $DATAPOOL/users:/user-files
+      #- /user-files/snapshots/ # This excludes the $DATAPOOL/users/snapshots folder on your host. Otherwise Filerun will index all those snapshots.
+    #labels:
+      #caddy: drive.$DOMAIN
+      #caddy.reverse_proxy: "{{upstreams 80}}"
+      #caddy.reverse_proxy.header_up: "Host drive.$DOMAIN"
       # Required extra headers
-      caddy.file_server: ""                                         # required for fileservers
-      caddy.encode: gzip                                            # required for fileservers
-      caddy.header.Strict-Transport-Security: '"max-age=15768000;"' # Recommended security hardening for fileservers
-      caddy.header.X-XSS-Protection: '"1; mode=block;"'             # Recommended security hardening for fileservers
-      caddy.header.X-Content-Type-Options: "nosniff"                # Seems required to open files in OnlyOffice
-      caddy.header.X-Frame-Options: "SAMEORIGIN"                    # Seems required to open files in OnlyOffice
-      plugsy.name: Drive [FileRun]
-      plugsy.link: https://drive.$DOMAIN
-      plugsy.category: Cloud
+      #caddy.file_server: ""                                         # required for fileservers
+      #caddy.encode: gzip                                            # required for fileservers
+      #caddy.header.Strict-Transport-Security: '"max-age=15768000;"' # Recommended security hardening for fileservers
+      #caddy.header.X-XSS-Protection: '"1; mode=block;"'             # Recommended security hardening for fileservers
+      #caddy.header.X-Content-Type-Options: "nosniff"                # Seems required to open files in OnlyOffice
+      #caddy.header.X-Frame-Options: "SAMEORIGIN"                    # Seems required to open files in OnlyOffice
+      #plugsy.name: Drive [FileRun]
+      #plugsy.link: https://drive.$DOMAIN
+      #plugsy.category: Cloud
 ##____________________ Filerun database [CLOUD/FileRun/db]
-  filerun-db:
-    container_name: cloud-filerun-db
-    image: mariadb:10.1
-    restart: always
-    networks:
-      - net-filerun
-    environment:
-      TZ: $TZ
-      MYSQL_ROOT_PASSWORD: $PW_DB
-      MYSQL_USER: $USER
-      MYSQL_PASSWORD: $PW_DB
-      MYSQL_DATABASE: filerun-db
-    volumes:
-      - $DOCKERDIR/cloud/filerun/db:/var/lib/mysql
-    labels:
-      plugsy.name: FileRun database
-      plugsy.parents: Drive [FileRun]
+  #filerun-db:
+    #container_name: cloud-filerun-db
+    #image: mariadb:10.1
+    #restart: always
+    #networks:
+      #- net-filerun
+    #environment:
+      #TZ: $TZ
+      #MYSQL_ROOT_PASSWORD: $PW_DB
+      #MYSQL_USER: $USER
+      #MYSQL_PASSWORD: $PW_DB
+      #MYSQL_DATABASE: filerun-db
+    #volumes:
+      #- $DOCKERDIR/cloud/filerun/db:/var/lib/mysql
+    #labels:
+      #plugsy.name: FileRun database
+      #plugsy.parents: Drive [FileRun]
 ##____________________ OnlyOffice for Filerun [CLOUD/FileRun/office]
-  onlyoffice:
-    container_name: cloud-office
-    image: onlyoffice/documentserver
-    networks: 
-      - net-caddy-proxy
-      - net-filerun
-    restart: always
-    depends_on:
-      - onlyoffice-db
-      - onlyoffice-rabbitmq
-    environment:
-      JWT_ENABLED: true
-      JWT_SECRET: $ONLYOFFICEJWT
-      AMQP_URI: amqp://onlyoffice-rabbitmq:5672
-      DB_HOST: onlyoffice-db
-      DB_PORT: 3306
-      DB_TYPE: mariadb
-      DB_NAME: office-db
-      DB_USER: $USER
-      DB_PWD:  $PW_DB
-    volumes:
-      - $DOCKERDIR/cloud/filerun/office/data:/var/www/onlyoffice/Data
-      - $DOCKERDIR/cloud/filerun/office/log:/var/log/onlyoffice
-      - /usr/share/fonts
-    labels:
-      caddy: office.$DOMAIN
-      caddy.reverse_proxy: "{{upstreams 80}}"
-      caddy.encode: gzip
-      plugsy.name: OnlyOffice
-      plugsy.parents: Drive [FileRun]
-  onlyoffice-rabbitmq:
-    container_name: cloud-office-rabbitmq
-    image: rabbitmq
-    restart: always
-    networks:
-    - net-filerun
-    volumes:
-      - $DOCKERDIR/cloud/filerun/office/rabbitmq:/var/lib/rabbitmq
-    labels:
-      plugsy.name: OnlyOffice rabbitmq
-      plugsy.parents: Drive [FileRun]
-  onlyoffice-db:
-    container_name: cloud-office-db
-    image: mariadb:latest
-    networks:
-      - net-filerun
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: $PW_DB
-      MYSQL_USER: $USER
-      MYSQL_PASSWORD: $PW_DB
-      MYSQL_DATABASE: office-db
-    volumes:
-      - $DOCKERDIR/cloud/filerun/office/db:/var/lib/mysql
-    labels:
-      plugsy.name: OnlyOffice database
-      plugsy.parents: Drive [FileRun]      
+  #onlyoffice:
+    #container_name: cloud-office
+    #image: onlyoffice/documentserver
+    #networks: 
+      #- net-caddy-proxy
+      #- net-filerun
+    #restart: always
+    #depends_on:
+      #- onlyoffice-db
+      #- onlyoffice-rabbitmq
+    #environment:
+      #JWT_ENABLED: true
+      #JWT_SECRET: $ONLYOFFICEJWT
+      #AMQP_URI: amqp://onlyoffice-rabbitmq:5672
+      #DB_HOST: onlyoffice-db
+      #DB_PORT: 3306
+      #DB_TYPE: mariadb
+      #DB_NAME: office-db
+      #DB_USER: $USER
+      #DB_PWD:  $PW_DB
+    #volumes:
+      #- $DOCKERDIR/cloud/filerun/office/data:/var/www/onlyoffice/Data
+      #- $DOCKERDIR/cloud/filerun/office/log:/var/log/onlyoffice
+      #- /usr/share/fonts
+    #labels:
+      #caddy: office.$DOMAIN
+      #caddy.reverse_proxy: "{{upstreams 80}}"
+      #caddy.encode: gzip
+      #plugsy.name: OnlyOffice
+      #plugsy.parents: Drive [FileRun]
+  #onlyoffice-rabbitmq:
+    #container_name: cloud-office-rabbitmq
+    #image: rabbitmq
+    #restart: always
+    #networks:
+    #- net-filerun
+    #volumes:
+      #- $DOCKERDIR/cloud/filerun/office/rabbitmq:/var/lib/rabbitmq
+    #labels:
+      #plugsy.name: OnlyOffice rabbitmq
+      #plugsy.parents: Drive [FileRun]
+  #onlyoffice-db:
+    #container_name: cloud-office-db
+    #image: mariadb:latest
+    #networks:
+      #- net-filerun
+    #restart: always
+    #environment:
+      #MYSQL_ROOT_PASSWORD: $PW_DB
+      #MYSQL_USER: $USER
+      #MYSQL_PASSWORD: $PW_DB
+      #MYSQL_DATABASE: office-db
+    #volumes:
+      #- $DOCKERDIR/cloud/filerun/office/db:/var/lib/mysql
+    #labels:
+      #plugsy.name: OnlyOffice database
+      #plugsy.parents: Drive [FileRun]      
 ##
 ##____________________ Guacamole [CLOUD/remote-desktop]
-  guacamole:
-    container_name: cloud-guacamole
-    image: maxwaldorf/guacamole
-    restart: always
-    networks: 
-      - net-caddy-proxy
-    environment:
-      TZ: $TZ
-      EXTENSIONS: auth-quickconnect,auth-totp # add ,auth-totp if exposed to the internet, for 2FA
-    volumes:
-      - $DOCKERDIR/cloud/guacamole:/config
-    labels:
-      caddy: remote.$DOMAIN
-      caddy.reverse_proxy: "{{upstreams 8080}}"
-      plugsy.name: Remote Desktop [Guacamole]
-      plugsy.link: https://remote.$DOMAIN
-      plugsy.category: Cloud
+  #guacamole:
+    #container_name: cloud-guacamole
+    #image: maxwaldorf/guacamole
+    #restart: always
+    #networks: 
+      #- net-caddy-proxy
+    #environment:
+      #TZ: $TZ
+      #EXTENSIONS: auth-quickconnect,auth-totp # add ,auth-totp if exposed to the internet, for 2FA
+    #volumes:
+      #- $DOCKERDIR/cloud/guacamole:/config
+    #labels:
+      #caddy: remote.$DOMAIN
+      #caddy.reverse_proxy: "{{upstreams 8080}}"
+      #plugsy.name: Remote Desktop [Guacamole]
+      #plugsy.link: https://remote.$DOMAIN
+      #plugsy.category: Cloud
 ## 
 ##________DOWNLOADS & TV MEDIA SERVICES________
 ##_____________________ Jellyfin [TV/Mediaserver] 
@@ -694,11 +694,11 @@ services:
 #
 networks:
   net-caddy-proxy:
-    external: true
+    external: false
   net-influxdb:
     driver: bridge
-  net-filerun:
-    driver: bridge
+  #net-filerun:
+    #driver: bridge
   net-unbound:
     driver: bridge
     ipam:
