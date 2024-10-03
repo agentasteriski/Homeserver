@@ -1,5 +1,6 @@
 #!/bin/bash
 # >>> DO NOT USE THIS FILE ON UBUNTU. USE /ARCHIVED/ INSTEAD. THIS FILE HAS BEEN ADJUSTED FOR MANJARO LINUX. <<<
+## no it's not i'm trying to use endeavour
 
 echo "____________________________________________"
 echo "           INSTALL SERVER TOOLS             "
@@ -9,7 +10,7 @@ echo "____________________________________________"
 echo "         Docker and Docker Compose          "
 echo "--------------------------------------------"
 # Install Docker and Docker Compose
-sudo pamac install --no-confirm docker docker-compose
+yay -S --noconfirm docker docker-compose
 
 # Create non-root user for docker, with privileges (not docker rootless)
 sudo groupadd docker
@@ -27,14 +28,14 @@ sudo sh -c "echo export COMPOSE_FILE="/home/${USER}/docker/compose.yml" >> /etc/
 echo "            Wireguard VPN Tools             "
 echo "--------------------------------------------"
 # If you used the post-install script, this should already be installed
-sudo pamac install --no-confirm wireguard-tools
+yay -S --noconfirm wireguard-tools
 
 echo "                   BTRBK                    "
 echo "--------------------------------------------"
 echo "Swiss handknife-like tool to automate snapshots & backups of personal data" 
 # available in the Arch User Repository (AUR) thus installed via Pamac. Will be automatically updated just like official repository packages. 
-sudo pamac install --no-confirm btrbk
-sudo pamac install --no-confirm mbuffer
+yay -S --noconfirm btrbk
+yay -S --noconfirm mbuffer
 
 echo "        RUN-IF-TODAY & ENABLE CRON          "
 echo "--------------------------------------------"
@@ -48,36 +49,36 @@ echo "                   NOCACHE                  "
 echo "--------------------------------------------"
 echo "handy when moving lots of files at once in the background, without filling up cache and slowing down the system."
 # available in the Arch User Repository (AUR) thus installed via Pamac. Will be automatically updated just like official repository packages. 
-sudo pamac install --no-confirm nocache
+yay -S --noconfirm nocache
 
 echo "                    GRSYNC                  "
 echo "--------------------------------------------"
 echo "Friendly UI for rsync"
-sudo pamac install --no-confirm grsync
+yay -S --noconfirm grsync
 
 echo "                  LM_SENSORS                "
 echo "--------------------------------------------"
 echo "to be able to read out all sensors" 
-sudo pamac install --no-confirm lm_sensors
+yay -S --noconfirm lm_sensors
 sudo sensors-detect --auto
 
 echo "          S.M.A.R.T. monitoring             "
 echo "--------------------------------------------"
 echo "to be able to read SMART values of drives" 
-sudo pamac install --no-confirm smartmontools
+yay -S --noconfirm smartmontools
 sudo sed -i -e "s^#DEVICESCAN -a^DEVICESCAN -a -o on -S on -n standby,q -s (S/../.././02|L/../../6/03) -W 1,35,60 -m default^g" /etc/smartd.conf
 sudo systemctl enable smartd
 
 echo "                 HD PARM                    "
 echo "--------------------------------------------"
 echo "to be able to configure drive parameters" 
-sudo pamac install --no-confirm hdparm
+yay -S --noconfirm hdparm
 
 echo "                 MERGERFS                  "
 echo "-------------------------------------------"
 echo "pool drives to make them appear as 1 without raid"
 # available in the Arch User Repository (AUR) thus installed via Pamac. Will be automatically updated just like official repository packages. 
-sudo pamac install --no-confirm mergerfs
+yay -S --noconfirm mergerfs
 
 
 echo "______________________________________________________"
@@ -112,27 +113,28 @@ echo "------------------------------"
 # To run the FileRun commands as the regular user, we add an env variable for that user to the only env that is accessible by root cronjobs: 
 sudo sh -c "echo LOGUSER=${USER} >> /etc/environment"
 
-echo " Add useful items to App Menu "
-echo "------------------------------"
-gsettings set org.gnome.shell.extensions.arcmenu pinned-app-list "['ONLYOFFICE Desktop Editors', '', 'org.onlyoffice.desktopeditors.desktop', 'LibreOffice Writer', '', 'libreoffice-writer.desktop', 'LibreOffice Calc', '', 'libreoffice-calc.desktop', 'LibreOffice Impress', '', 'libreoffice-impress.desktop', 'Document Scanner', '', 'simple-scan.desktop', 'Text Editor', '', 'pluma.desktop', 'Calculator', '', 'org.gnome.Calculator.desktop', 'digiKam', '', 'org.kde.digikam.desktop', 'Pinta Image Editor', '', 'pinta.desktop', 'GNU Image Manipulation Program', '', 'gimp.desktop', 'Strawberry', '', 'org.strawberrymusicplayer.strawberry.desktop', 'Audacity', '', 'audacity.desktop', 'LosslessCut', '', 'losslesscut-bin.desktop', 'HandBrake', '', 'fr.handbrake.ghb.desktop', 'BleachBit', '', 'org.bleachbit.BleachBit.desktop', 'Tweaks', '', 'org.gnome.tweaks.desktop', 'Extension Manager', '', 'com.mattjakeman.ExtensionManager.desktop', 'Add/Remove Software', '', 'org.manjaro.pamac.manager.desktop', 'System Monitor', '', 'gnome-system-monitor.desktop', 'Disks', '', 'org.gnome.DiskUtility.desktop']"
+#gno gnome here
+#echo " Add useful items to App Menu "
+#echo "------------------------------"
+#gsettings set org.gnome.shell.extensions.arcmenu pinned-app-list "['ONLYOFFICE Desktop Editors', '', 'org.onlyoffice.desktopeditors.desktop', 'LibreOffice Writer', '', 'libreoffice-writer.desktop', 'LibreOffice Calc', '', 'libreoffice-calc.desktop', 'LibreOffice Impress', '', 'libreoffice-impress.desktop', 'Document Scanner', '', 'simple-scan.desktop', 'Text Editor', '', 'pluma.desktop', 'Calculator', '', 'org.gnome.Calculator.desktop', 'digiKam', '', 'org.kde.digikam.desktop', 'Pinta Image Editor', '', 'pinta.desktop', 'GNU Image Manipulation Program', '', 'gimp.desktop', 'Strawberry', '', 'org.strawberrymusicplayer.strawberry.desktop', 'Audacity', '', 'audacity.desktop', 'LosslessCut', '', 'losslesscut-bin.desktop', 'HandBrake', '', 'fr.handbrake.ghb.desktop', 'BleachBit', '', 'org.bleachbit.BleachBit.desktop', 'Tweaks', '', 'org.gnome.tweaks.desktop', 'Extension Manager', '', 'com.mattjakeman.ExtensionManager.desktop', 'Add/Remove Software', '', 'org.manjaro.pamac.manager.desktop', 'System Monitor', '', 'gnome-system-monitor.desktop', 'Disks', '', 'org.gnome.DiskUtility.desktop']"
 
-echo "  Add filemanager bookmarks   "
-echo "------------------------------"
+#echo "  Add filemanager bookmarks   "
+#echo "------------------------------"
 # Add CLI to Panel Favourites
-gsettings set org.gnome.shell favorite-apps "['nemo.desktop', 'org.gnome.Terminal.desktop', 'firefox.desktop', 'org.gnome.gThumb.desktop', 'pluma.desktop', 'org.gnome.Calculator.desktop']"
+#gsettings set org.gnome.shell favorite-apps "['nemo.desktop', 'org.gnome.Terminal.desktop', 'firefox.desktop', 'org.gnome.gThumb.desktop', 'pluma.desktop', 'org.gnome.Calculator.desktop']"
 
 # Set Nemo bookmarks, reflecting folder that will be renamed later (Videos>Media)
-truncate -s 0 $HOME/.config/gtk-3.0/bookmarks
-tee -a $HOME/.config/gtk-3.0/bookmarks &>/dev/null << EOF
-file:///home/${USER}/docker Docker
-file:///mnt/drives Drives
-file:///mnt/pool Pool
-file:///home/${USER}/Downloads Downloads
-file:///home/${USER}/Documents Documents
-file:///home/${USER}/Music Music
-file:///home/${USER}/Pictures Pictures
-file:///home/${USER}/Media Media
-EOF
+#truncate -s 0 $HOME/.config/gtk-3.0/bookmarks
+#tee -a $HOME/.config/gtk-3.0/bookmarks &>/dev/null << EOF
+#file:///home/${USER}/docker Docker
+#file:///mnt/drives Drives
+#file:///mnt/pool Pool
+#file:///home/${USER}/Downloads Downloads
+#file:///home/${USER}/Documents Documents
+#file:///home/${USER}/Music Music
+#file:///home/${USER}/Pictures Pictures
+#file:///home/${USER}/Media Media
+#EOF
 
 echo "  Optimise power consumption  "
 echo "------------------------------"
@@ -158,7 +160,7 @@ sudo powertop --auto-tune
 sudo systemctl start powertop.service
 
 # Disable automatic suspend
-gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+#gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
 
 echo "Disable Arch/Manjaro own DNS resolve settings"
@@ -211,8 +213,8 @@ systemctl enable --now wgui.{path,service}
 echo "    EMAIL NOTIFICATIONS       "
 echo "------------------------------"
 # allow system to send email notifications - Configure smtp according to Arch wiki
-sudo pamac install --no-confirm msmtp
-sudo pamac install --no-confirm s-nail
+yay -S --noconfirm msmtp
+yay -S --noconfirm s-nail
 # link sendmail to msmtp
 sudo ln -s /usr/bin/msmtp /usr/bin/sendmail
 sudo ln -s /usr/bin/msmtp /usr/sbin/sendmail
@@ -331,22 +333,22 @@ echo "______________________________________________________________________"
 cd $HOME/Downloads
 echo "         compose yml and env file           "
 echo "--------------------------------------------"
-wget -O $HOME/docker/.env https://raw.githubusercontent.com/zilexa/Homeserver/master/docker/.env
-wget -O $HOME/docker/docker-compose.yml https://raw.githubusercontent.com/zilexa/Homeserver/master/docker/docker-compose.yml
+wget -O $HOME/docker/.env https://raw.githubusercontent.com/agentasteriski/Homeserver/master/docker/.env
+wget -O $HOME/docker/docker-compose.yml https://raw.githubusercontent.com/agentasteriski/Homeserver/master/docker/docker-compose.yml
 
 echo "      BTRBK config and mail script          "
 echo "--------------------------------------------"
 mkdir -p $HOME/docker/HOST/btrbk
-wget -O $HOME/docker/HOST/btrbk/btrbk.conf https://raw.githubusercontent.com/zilexa/Homeserver/master/docker/HOST/btrbk/btrbk.conf
-wget -O $HOME/docker/HOST/btrbk/btrbk-mail.sh https://raw.githubusercontent.com/zilexa/Homeserver/master/docker/HOST/btrbk/btrbk-mail.sh
+wget -O $HOME/docker/HOST/btrbk/btrbk.conf https://raw.githubusercontent.com/agentasteriski/Homeserver/master/docker/HOST/btrbk/btrbk.conf
+wget -O $HOME/docker/HOST/btrbk/btrbk-mail.sh https://raw.githubusercontent.com/agentasteriski/Homeserver/master/docker/HOST/btrbk/btrbk-mail.sh
 sudo ln -s $HOME/docker/HOST/btrbk/btrbk.conf /etc/btrbk/btrbk.conf
 # MANUALLY configure the $HOME/docker/HOST/btrbk/btrbk.conf to your needs
 
 echo "                 archiver                   "
 echo "--------------------------------------------"
 mkdir -p $HOME/docker/HOST/archiver
-wget -O $HOME/docker/HOST/archiver/archiver.sh https://raw.githubusercontent.com/zilexa/Homeserver/master/docker/HOST/archiver/archiver.sh
-wget -O $HOME/docker/HOST/archiver/archiver_exclude.txt https://github.com/zilexa/Homeserver/blob/master/docker/HOST/archiver/archiver_exclude.txt
+wget -O $HOME/docker/HOST/archiver/archiver.sh https://raw.githubusercontent.com/agentasteriski/Homeserver/master/docker/HOST/archiver/archiver.sh
+wget -O $HOME/docker/HOST/archiver/archiver_exclude.txt https://github.com/agentasteriski/Homeserver/blob/master/docker/HOST/archiver/archiver_exclude.txt
 
 
 echo "______________________________________________________"
