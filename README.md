@@ -74,7 +74,7 @@ Official documentation is used to install tools correctly and all tools will be 
 
 Download and install it via: 
 ```
-cd Downloads && wget https://raw.githubusercontent.com/zilexa/Homeserver/master/prep-server.sh
+cd Downloads && wget https://raw.githubusercontent.com/agentasteriski/Homeserver/master/prep-server.sh
 bash prep-server.sh
 ```
 _Note_
