@@ -441,7 +441,7 @@ services:
 ##_____________________ Jellyfin [TV/Mediaserver] 
   jellyfin:
     container_name: tv-jellyfin
-    image: cr.hotio.dev/hotio/jellyfin
+    image: ghcr.io/hotio/jellyfin
     restart: always
     networks: 
       - net-caddy-proxy
@@ -469,7 +469,7 @@ services:
 ##____________________ Sonarr [TV/Series-downloadmanagement]
   sonarr:
     container_name: tv-sonarr
-    image: cr.hotio.dev/hotio/sonarr
+    image: ghcr.io/hotio/sonarr
     networks: 
       - net-caddy-proxy
     depends_on:
@@ -496,7 +496,7 @@ services:
 ##____________________ Radarr [TV/Movies-downloadmanagement]
   radarr:
     container_name: tv-radarr
-    image: cr.hotio.dev/hotio/radarr
+    image: ghcr.io/hotio/radarr
     networks: 
       - net-caddy-proxy
     depends_on:
@@ -523,7 +523,7 @@ services:
 ##____________________ Bazarr [[TV/subtitles]]
   bazarr:
     container_name: tv-bazarr
-    image: cr.hotio.dev/hotio/bazarr
+    image: ghcr.io/hotio/bazarr
     networks: 
       - net-caddy-proxy
     depends_on:
@@ -550,7 +550,7 @@ services:
 ##____________________ Lidarr [TV/Music-downloadmanagement]
   lidarr:
     container_name: tv-lidarr
-    image: cr.hotio.dev/hotio/lidarr
+    image: ghcr.io/hotio/lidarr
     networks: 
       - net-caddy-proxy
     depends_on:
@@ -577,7 +577,7 @@ services:
 ##____________________ Prowlarr [TV/torrentsites-proxy]
   prowlarr:
     container_name: tv-prowlarr
-    image: cr.hotio.dev/hotio/prowlarr:testing
+    image: ghcr.io/hotio/prowlarr:testing
     networks: 
       - net-caddy-proxy
     depends_on:
@@ -623,7 +623,7 @@ services:
 ##____________________ Transmission [TV/torrent-download-client]
   qbittorrent:
     container_name: tv-qbittorrent
-    image: cr.hotio.dev/hotio/qbittorrent
+    image: ghcr.io/hotio/qbittorrent
     depends_on:
       - VPN-proxy
     network_mode: service:VPN-proxy
