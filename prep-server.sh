@@ -43,6 +43,8 @@ echo "simplify scheduling of weekly/monthly tasks"
 sudo wget -O /usr/bin/run-if-today https://raw.githubusercontent.com/xr09/cron-last-sunday/master/run-if-today
 sudo chmod +x /usr/bin/run-if-today
 echo "enable cron service" 
+#endeavour might need this installed
+yay -S --noconfirm cronie
 systemctl enable --now cronie.service
 
 echo "                   NOCACHE                  "
@@ -136,47 +138,47 @@ sudo sh -c "echo LOGUSER=${USER} >> /etc/environment"
 #file:///home/${USER}/Media Media
 #EOF
 
-echo "  Optimise power consumption  "
-echo "------------------------------"
+#echo "  Optimise power consumption  "
+#echo "------------------------------"
 # Always run Powertop autotune at boot
-sudo tee -a /etc/systemd/system/powertop.service << EOF
-[Unit]
-Description=Powertop tunings
+#sudo tee -a /etc/systemd/system/powertop.service << EOF
+#[Unit]
+#Description=Powertop tunings
 
-[Service]
-Type=oneshot
-RemainAfterExit=yes
-ExecStart=/usr/bin/powertop --auto-tune
+#[Service]
+#Type=oneshot
+#RemainAfterExit=yes
+#ExecStart=/usr/bin/powertop --auto-tune
 
-[Install]
-WantedBy=multi-user.target
-EOF
+#[Install]
+#WantedBy=multi-user.target
+#EOF
 ## Enable the service
-sudo systemctl daemon-reload
-sudo systemctl enable powertop.service
+#sudo systemctl daemon-reload
+#sudo systemctl enable powertop.service
 ## Tune system now
-sudo powertop --auto-tune
+#sudo powertop --auto-tune
 ## Start the service
-sudo systemctl start powertop.service
+#sudo systemctl start powertop.service
 
 # Disable automatic suspend
 #gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
 
 
-echo "Disable Arch/Manjaro own DNS resolve settings"
-echo "------------------------------" 
+#echo "Disable Arch/Manjaro own DNS resolve settings"
+#echo "------------------------------" 
 # Required to run a DNS server like Adguard Home and Unbound
-sudo rm /etc/resolv.conf
-sudo tee -a /etc/resolv.conf << EOF
-nameserver ::1
-nameserver 127.0.0.1
-options trust-ad
-EOF
-sudo tee -a /etc/NetworkManager/conf.d/90-dns-none.conf << EOF
-[main]
-dns=none
-EOF
-systemctl reload NetworkManager
+#sudo rm /etc/resolv.conf
+#sudo tee -a /etc/resolv.conf << EOF
+#nameserver ::1
+#nameserver 127.0.0.1
+#options trust-ad
+#EOF
+#sudo tee -a /etc/NetworkManager/conf.d/90-dns-none.conf << EOF
+#[main]
+#dns=none
+#EOF
+#systemctl reload NetworkManager
 
 
 echo "    Auto-restart VPN server   "
